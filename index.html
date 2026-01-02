@@ -3,163 +3,312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shaigan BD Portal | Diamond Edition</title>
+    <title>Shaigan BD Portal | Master Diamond Edition</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* CSS VARIABLES & THEMING */
         :root {
-            --gold: #d4af37; --turquoise: #008080; --cream: #fdf5e6;
-            --bg: #050a14; --card: rgba(16, 33, 65, 0.98);
+            --gold: #d4af37;
+            --turquoise: #008080;
+            --cream: #fdf5e6;
+            --bg-dark: #050a14;
+            --card-bg: rgba(16, 33, 65, 0.98);
+            --danger: #e74c3c;
+            --success: #2ecc71;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: var(--bg); color: var(--cream); padding: 15px; }
 
-        header { text-align: center; padding: 25px; }
-        .logo-box img { height: 90px; filter: drop-shadow(0 0 8px var(--gold)); margin-bottom: 15px; }
-        h1 { color: var(--gold); letter-spacing: 2px; font-size: 1.8rem; text-transform: uppercase; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
 
+        body {
+            background: radial-gradient(circle at center, #102141 0%, #050a14 100%);
+            background-attachment: fixed;
+            color: var(--cream);
+            padding: 15px;
+            line-height: 1.6;
+        }
+
+        /* HEADER SECTION */
+        header { text-align: center; padding: 30px 10px; }
+        .logo-box img { 
+            height: 100px; 
+            filter: drop-shadow(0 0 10px var(--gold)); 
+            margin-bottom: 15px;
+            animation: softFloat 4s ease-in-out infinite;
+        }
+        h1 { color: var(--gold); text-transform: uppercase; letter-spacing: 3px; font-size: 2rem; }
+
+        /* FILTER BAR */
         .filter-bar { 
-            display: flex; flex-wrap: wrap; gap: 12px; max-width: 1200px; 
-            margin: 20px auto; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px;
-            border: 1px solid rgba(212,175,55,0.1);
+            display: flex; flex-wrap: wrap; gap: 15px; max-width: 1200px; 
+            margin: 20px auto; background: rgba(255,255,255,0.05); 
+            padding: 20px; border-radius: 15px; border: 1px solid rgba(212,175,55,0.2);
         }
-        .search-box { flex: 2; min-width: 280px; position: relative; }
-        .search-box input { width: 100%; padding: 10px 10px 10px 35px; border-radius: 8px; border: 1px solid var(--gold); background: #fff; color: #111; font-weight: 600; }
-        .search-box i { position: absolute; left: 12px; top: 12px; color: var(--turquoise); }
-        select { flex: 1; padding: 10px; border-radius: 8px; background: #0a192f; color: #fff; border: 1px solid var(--gold); }
+        .search-box { flex: 2; min-width: 300px; position: relative; }
+        .search-box input { 
+            width: 100%; padding: 12px 15px 12px 45px; border-radius: 10px; 
+            border: 2px solid var(--gold); background: #fff; color: #111; font-weight: 600; 
+        }
+        .search-box i { position: absolute; left: 15px; top: 15px; color: var(--turquoise); font-size: 1.2rem; }
+        
+        select { 
+            flex: 1; padding: 12px; border-radius: 10px; background: #0a192f; 
+            color: #fff; border: 1px solid var(--gold); cursor: pointer; font-weight: 600;
+        }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; max-width: 1300px; margin: auto; }
+        /* PRODUCT GRID & CARDS */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 25px; max-width: 1300px; margin: auto; }
         
         .p-card { 
-            background: var(--card); border-radius: 15px; border-top: 3px solid var(--gold);
-            padding: 20px; transition: 0.3s;
+            background: var(--card-bg); border-radius: 15px; border-top: 4px solid var(--gold);
+            padding: 20px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        .p-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .p-card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.6); }
         
-        .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; color: var(--gold); font-weight: 800; font-size: 1.2rem; }
-        .composition-text { font-size: 0.85rem; color: #ccc; font-style: italic; margin-bottom: 10px; display: block; }
-        .indication-tag { font-size: 0.7rem; color: #fff; background: var(--turquoise); padding: 3px 10px; border-radius: 50px; margin-bottom: 15px; display: inline-block; font-weight: 600; }
-
-        .matrix { 
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; 
-            background: rgba(0,0,0,0.3); padding: 12px; border-radius: 10px; margin-bottom: 15px;
+        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; color: var(--gold); font-weight: 800; font-size: 1.3rem; }
+        
+        .composition-text { font-size: 0.9rem; color: #cbd5e1; font-style: italic; display: block; margin-bottom: 10px; }
+        
+        .indication-tag { 
+            font-size: 0.75rem; color: #fff; background: var(--turquoise); 
+            padding: 4px 12px; border-radius: 50px; margin-bottom: 15px; 
+            display: inline-block; font-weight: 700; letter-spacing: 0.5px; 
         }
-        .m-item { display: flex; flex-direction: column; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4px; }
-        .m-label { font-size: 0.6rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
-        .m-val { font-size: 0.9rem; font-weight: 700; color: #fff; }
 
+        /* DATA MATRIX */
+        .matrix { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; 
+            background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; margin-bottom: 20px;
+        }
+        .m-item { display: flex; flex-direction: column; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
+        .m-label { font-size: 0.65rem; color: var(--gold); text-transform: uppercase; font-weight: 800; }
+        .m-val { font-size: 1rem; font-weight: 700; color: #fff; }
+
+        /* BUTTONS */
         .btn-group { display: flex; gap: 10px; }
-        .btn { flex: 1; padding: 8px; border-radius: 6px; cursor: pointer; border: none; font-weight: 800; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .btn { 
+            flex: 1; padding: 10px; border-radius: 8px; cursor: pointer; border: none; 
+            font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; 
+            justify-content: center; gap: 8px; transition: 0.3s; 
+        }
         .btn-edit { background: var(--gold); color: #000; }
-        .btn-del { background: transparent; border: 1px solid #e74c3c; color: #e74c3c; }
+        .btn-edit:hover { background: #b8860b; }
+        .btn-del { background: transparent; border: 2px solid var(--danger); color: var(--danger); }
+        .btn-del:hover { background: var(--danger); color: #fff; }
 
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; padding: 20px; align-items: center; justify-content: center; }
-        .modal-body { background: #0f172a; width: 100%; max-width: 700px; padding: 25px; border-radius: 15px; border: 1px solid var(--gold); }
-        .f-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        input { width: 100%; padding: 8px; background: #000; color: #fff; border: 1px solid #333; border-radius: 6px; }
+        /* MODAL SETTINGS */
+        .modal { 
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); 
+            z-index: 1000; padding: 20px; align-items: center; justify-content: center; 
+        }
+        .modal-body { 
+            background: #0f172a; width: 100%; max-width: 800px; padding: 30px; 
+            border-radius: 20px; border: 2px solid var(--gold); max-height: 90vh; overflow-y: auto; 
+        }
+        .f-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media (max-width: 600px) { .f-grid { grid-template-columns: 1fr; } }
+        
+        label { font-size: 11px; color: var(--gold); font-weight: bold; text-transform: uppercase; }
+        input { 
+            width: 100%; padding: 12px; background: #000; color: #fff; 
+            border: 1px solid #333; border-radius: 8px; margin-top: 5px; 
+        }
+
+        @keyframes softFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo-box"><img src="1ab.png" onerror="this.src='https://i.ibb.co/qY7z8yY/Shaigan-Logo.png'"></div>
+        <div class="logo-box">
+            <img src="1ab.png" alt="Shaigan Logo" onerror="this.src='https://i.ibb.co/qY7z8yY/Shaigan-Logo.png'">
+        </div>
         <h1>Business Development Portal</h1>
     </header>
 
     <div class="filter-bar">
-        <div class="search-box"><i class="fas fa-search"></i><input type="text" id="search" placeholder="Search Brand, Composition or Indication..."></div>
-        <select id="fTeam"><option value="">All Teams</option></select>
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search" placeholder="Search Brand, Composition or Indication...">
+        </div>
+        <select id="fTeam"><option value="">Filter by Team</option></select>
+        <button onclick="location.reload()" style="background:none; border:none; color:var(--gold); cursor:pointer; font-size: 1.3rem;">
+            <i class="fas fa-sync-alt"></i>
+        </button>
     </div>
 
-    <div id="grid" class="grid"></div>
+    <div id="grid" class="grid">
+        <div style="grid-column: 1/-1; text-align: center; padding: 100px;">
+            <i class="fas fa-atom fa-spin fa-4x" style="color:var(--gold)"></i>
+            <p style="margin-top:20px; letter-spacing:2px;">SYNCHRONIZING WITH CLOUD DATABASE...</p>
+        </div>
+    </div>
 
     <div id="modal" class="modal">
         <div class="modal-body">
-            <h2 style="color:var(--gold); margin-bottom:15px;">Edit Record</h2>
+            <h2 style="color:var(--gold); margin-bottom:20px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                <i class="fas fa-user-shield"></i> Administration Panel
+            </h2>
             <div id="form" class="f-grid"></div>
-            <div class="btn-group" style="margin-top:20px;">
-                <button class="btn btn-edit" onclick="save()">Save</button>
-                <button class="btn btn-del" onclick="closeM()">Cancel</button>
+            <div class="btn-group" style="margin-top:30px;">
+                <button class="btn btn-edit" onclick="saveData()" id="saveBtn">Confirm & Update Cloud</button>
+                <button class="btn btn-del" onclick="closeM()" style="border-color:#555; color:#aaa;">Cancel</button>
             </div>
         </div>
     </div>
 
 <script>
-    const API = "https://script.google.com/macros/s/AKfycbytDYG9VFIY7TkOTMVMj5ZTdTZ_v6q84L8cDMAyfzImQRBHmieXDWG_R6maAzKFTTme2Q/exec"; 
-    const PASS = "Abc123@";
-    let db = [];
+    // 1. YOUR API CONFIGURATION
+    const API_URL = "https://script.google.com/macros/s/AKfycbytDYG9VFIY7TkOTMVMj5ZTdTZ_v6q84L8cDMAyfzImQRBHmieXDWG_R6maAzKFTTme2Q/exec"; // Ensure this is your latest URL
+                     
+    const ADMIN_PASS = "Abc123@";
+    let masterData = [];
 
-    async function load() {
-        const r = await fetch(API);
-        db = await r.json();
-        const teams = [...new Set(db.map(x => x.TeamName).filter(Boolean))].sort();
-        teams.forEach(t => document.getElementById('fTeam').innerHTML += `<option value="${t}">${t}</option>`);
-        render();
+    // 2. INITIALIZE DATA FETCHING
+    async function initPortal() {
+        try {
+            const response = await fetch(API_URL);
+            masterData = await response.json();
+            
+            // Populate Team Filter
+            const teams = [...new Set(masterData.map(item => item.TeamName).filter(Boolean))].sort();
+            const teamSelect = document.getElementById('fTeam');
+            teams.forEach(t => teamSelect.innerHTML += `<option value="${t}">${t}</option>`);
+            
+            renderPortal();
+        } catch (error) {
+            document.getElementById('grid').innerHTML = `
+                <div style="text-align:center; color:var(--danger); grid-column: 1/-1;">
+                    <i class="fas fa-exclamation-triangle fa-3x"></i>
+                    <p>Connection Failed. Please check your Google Deployment URL and ensure it is set to 'Anyone'.</p>
+                </div>`;
+        }
     }
 
-    function getIcon(form) {
+    // 3. ICON LOGIC
+    function getDosageIcon(form) {
         const f = (form || "").toLowerCase();
         if(f.includes("tab")) return "fa-tablets";
         if(f.includes("cap")) return "fa-capsules";
-        if(f.includes("inj")) return "fa-syringe";
+        if(f.includes("inj") || f.includes("vial") || f.includes("amp")) return "fa-syringe";
         return "fa-pills";
     }
 
-    function render() {
-        const s = document.getElementById('search').value.toLowerCase();
-        const t = document.getElementById('fTeam').value;
-        const filtered = db.filter(p => 
-            (p.ProductName.toLowerCase().includes(s) || (p.Composition || "").toLowerCase().includes(s) || (p.Indication || "").toLowerCase().includes(s)) &&
-            (!t || p.TeamName === t)
-        );
+    // 4. RENDER CARDS
+    function renderPortal() {
+        const searchTerm = document.getElementById('search').value.toLowerCase();
+        const teamFilter = document.getElementById('fTeam').value;
+        
+        const filtered = masterData.filter(p => {
+            const matchesSearch = (p.ProductName.toLowerCase().includes(searchTerm) || 
+                                   (p.Composition || "").toLowerCase().includes(searchTerm) || 
+                                   (p.Indication || "").toLowerCase().includes(searchTerm));
+            const matchesTeam = (!teamFilter || p.TeamName === teamFilter);
+            return matchesSearch && matchesTeam;
+        });
 
         document.getElementById('grid').innerHTML = filtered.map(p => `
             <div class="p-card">
-                <div class="card-header"><i class="fas ${getIcon(p.DosageForm)}"></i> ${p.ProductName}</div>
-                <span class="composition-text">${p.Composition || 'Composition not specified'}</span>
-                <div class="indication-tag">${p.Indication || 'General'}</div>
+                <div class="card-header">
+                    <i class="fas ${getDosageIcon(p.DosageForm)}"></i> ${p.ProductName}
+                </div>
+                <span class="composition-text">${p.Composition || 'Active Ingredient Pending'}</span>
+                <div class="indication-tag">${p.Indication || 'General Therapeutics'}</div>
                 
                 <div class="matrix">
-                    <div class="m-item"><span class="m-label">MAT Value</span><span class="m-val" style="color:var(--gold)">${p.MATValue || '0'}</span></div>
-                    <div class="m-item"><span class="m-label">Value Growth</span><span class="m-val">${p.ValueGrowth || '0'}%</span></div>
-                    <div class="m-item"><span class="m-label">Unit Sales</span><span class="m-val">${p.UnitSales || '0'}</span></div>
-                    <div class="m-item"><span class="m-label">Unit Growth</span><span class="m-val">${p.UnitGrowth || '0'}%</span></div>
+                    <div class="m-item">
+                        <span class="m-label">MAT Value</span>
+                        <span class="m-val" style="color:var(--gold)">${p.MATValue || '0'}</span>
+                    </div>
+                    <div class="m-item">
+                        <span class="m-label">Value Growth</span>
+                        <span class="m-val" style="color:${parseFloat(p.ValueGrowth) >= 0 ? 'var(--success)' : 'var(--danger)'}">
+                            ${p.ValueGrowth || '0'}%
+                        </span>
+                    </div>
+                    <div class="m-item">
+                        <span class="m-label">Unit Sales</span>
+                        <span class="m-val">${p.UnitSales || '0'}</span>
+                    </div>
+                    <div class="m-item">
+                        <span class="m-label">Unit Growth</span>
+                        <span class="m-val">${p.UnitGrowth || '0'}%</span>
+                    </div>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-edit" onclick="openEdit('${p.ProductName.replace(/'/g, "\\'")}')">Edit</button>
-                    <button class="btn btn-del" onclick="remove('${p.ProductName.replace(/'/g, "\\'")}')">Delete</button>
+                    <button class="btn btn-edit" onclick="handleAction('EDIT', '${p.ProductName.replace(/'/g, "\\'")}')">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-del" onclick="handleAction('DELETE', '${p.ProductName.replace(/'/g, "\\'")}')">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
                 </div>
             </div>
         `).join('');
     }
 
-    function openEdit(name) {
-        if(prompt("Password:") !== PASS) return alert("Denied");
-        const p = db.find(x => x.ProductName === name);
-        document.getElementById('form').innerHTML = Object.keys(p).map(k => `
-            <div><label style="font-size:10px; color:var(--gold)">${k}</label><input id="f_${k}" value="${p[k]||''}" ${k==='ProductName'?'readonly':''}></div>
-        `).join('');
-        document.getElementById('modal').style.display = 'flex';
+    // 5. SECURE ACTIONS (EDIT/DELETE)
+    function handleAction(type, name) {
+        if(prompt("Enter Administrator Credentials (PIN):") !== ADMIN_PASS) {
+            return alert("Access Denied: Unauthorized Personnel.");
+        }
+
+        if(type === 'EDIT') {
+            const product = masterData.find(x => x.ProductName === name);
+            const formContainer = document.getElementById('form');
+            formContainer.innerHTML = Object.keys(product).map(key => `
+                <div>
+                    <label>${key}</label>
+                    <input id="field_${key}" value="${product[key] || ''}" ${key === 'ProductName' ? 'readonly' : ''}>
+                </div>
+            `).join('');
+            document.getElementById('modal').style.display = 'flex';
+        } 
+        
+        else if(type === 'DELETE') {
+            if(confirm(`WARNING: Are you sure you want to PERMANENTLY delete "${name}" from the cloud database?`)) {
+                processCloudSync({ ProductName: name, action: "DELETE" });
+            }
+        }
     }
 
-    async function save() {
+    // 6. CLOUD SYNCHRONIZATION
+    async function saveData() {
+        const btn = document.getElementById('saveBtn');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> UPDATING...';
+        btn.disabled = true;
+
         const payload = {};
-        document.querySelectorAll('[id^="f_"]').forEach(i => payload[i.id.replace('f_','')] = i.value);
-        await fetch(API, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-        location.reload();
+        document.querySelectorAll('[id^="field_"]').forEach(input => {
+            const key = input.id.replace('field_', '');
+            payload[key] = input.value;
+        });
+
+        await processCloudSync(payload);
     }
 
-    async function remove(name) {
-        if(prompt("Password:") !== PASS) return alert("Denied");
-        if(!confirm(`Delete ${name}?`)) return;
-        await fetch(API, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ ProductName: name, action: "DELETE" }) });
-        location.reload();
+    async function processCloudSync(payload) {
+        try {
+            await fetch(API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(payload)
+            });
+            alert("Cloud Sync Successful.");
+            location.reload();
+        } catch (e) {
+            alert("Sync Failed. Please check connectivity.");
+            location.reload();
+        }
     }
 
     function closeM() { document.getElementById('modal').style.display = 'none'; }
-    document.getElementById('search').oninput = render;
-    document.getElementById('fTeam').onchange = render;
-    window.onload = load;
+    document.getElementById('search').addEventListener('input', renderPortal);
+    document.getElementById('fTeam').addEventListener('change', renderPortal);
+    
+    // START PORTAL
+    window.onload = initPortal;
 </script>
 </body>
 </html>

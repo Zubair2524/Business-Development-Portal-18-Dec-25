@@ -14,6 +14,7 @@
             --bg-dark: #050a14;
             --card-bg: rgba(16, 33, 65, 0.95);
             --danger: #e74c3c;
+            --dup-purple: #8e44ad;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
@@ -82,16 +83,10 @@
             padding: 20px; transition: 0.4s; position: relative; overflow: hidden;
             display: flex; flex-direction: column; height: 100%;
         }
-        .p-card.expanded {
-            grid-column: 1 / -1;
-            border-left: 5px solid var(--gold);
-        }
+        .p-card.expanded { grid-column: 1 / -1; border-left: 5px solid var(--gold); }
         .p-card:hover:not(.expanded) { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(0,0,0,0.6); }
         
-        .card-title { 
-            font-size: 1.3rem; font-weight: 700; color: var(--gold); 
-            display: flex; align-items: center; gap: 12px; margin-bottom: 5px; 
-        }
+        .card-title { font-size: 1.3rem; font-weight: 700; color: var(--gold); display: flex; align-items: center; gap: 12px; margin-bottom: 5px; }
         .card-title i { animation: bounce 3s infinite; }
         .comp-line { font-size: 0.85rem; color: #ccc; font-style: italic; display: block; margin-bottom: 10px; }
         .ind-pill { font-size: 0.7rem; background: var(--turquoise); color: white; padding: 3px 10px; border-radius: 50px; font-weight: 700; display: inline-block; margin-bottom: 15px; }
@@ -102,22 +97,32 @@
         .m-lab { font-size: 0.6rem; color: var(--gold); text-transform: uppercase; font-weight: 800; }
         .m-val { font-size: 0.9rem; font-weight: 700; color: #fff; }
 
-        /* Enriched Details Area */
         .extra-details {
             margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--gold);
             display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;
             animation: fadeIn 0.5s ease;
         }
 
-        .btn-row { display: flex; gap: 10px; margin-top: auto; padding-top: 15px; }
+        /* Minimized Buttons & Tooltips */
+        .btn-row { display: flex; gap: 6px; margin-top: auto; padding-top: 15px; }
         .btn-tool { 
-            flex: 1; padding: 10px; border-radius: 8px; border: none; cursor: pointer;
-            font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 5px; transition: 0.2s; font-size: 0.8rem;
+            flex: 1; padding: 8px 4px; border-radius: 6px; border: none; cursor: pointer;
+            font-weight: 700; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 0.9rem;
+            position: relative;
         }
         .btn-edit { background: var(--gold); color: black; }
         .btn-info { background: var(--turquoise); color: white; }
+        .btn-dup { background: var(--dup-purple); color: white; }
         .btn-del { background: transparent; border: 1px solid var(--danger); color: var(--danger); }
         .btn-del:hover { background: var(--danger); color: white; }
+
+        /* Tooltip Style */
+        [data-tooltip]::before {
+            content: attr(data-tooltip); position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%);
+            background: #000; color: var(--gold); padding: 4px 8px; border-radius: 4px; font-size: 0.6rem;
+            white-space: nowrap; opacity: 0; visibility: hidden; transition: 0.3s; border: 1px solid var(--gold); z-index: 100;
+        }
+        [data-tooltip]:hover::before { opacity: 1; visibility: visible; }
 
         /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999; padding: 20px; overflow-y: auto; align-items: center; justify-content: center; }
@@ -171,8 +176,8 @@
             <h2 style="color:var(--gold); margin-bottom:20px; border-bottom: 2px solid var(--gold); padding-bottom: 10px;"><i class="fas fa-edit"></i> Product Master Update</h2>
             <div class="form-grid" id="formContainer"></div>
             <div style="margin-top:25px; display:flex; gap:10px;">
-                <button id="btnSave" class="btn-tool" onclick="saveRecord()" style="background:#27ae60; color:white">Update Record</button>
-                <button class="btn-tool" onclick="closeModal()" style="background:#555; color:white">Cancel</button>
+                <button id="btnSave" class="btn-tool" onclick="saveRecord()" style="background:#27ae60; color:white; flex:2;">Update Record</button>
+                <button class="btn-tool" onclick="closeModal()" style="background:#555; color:white; flex:1;">Cancel</button>
             </div>
         </div>
     </div>
@@ -235,11 +240,18 @@
                 ` : ''}
 
                 <div class="btn-row">
-                    <button class="btn-tool btn-info" onclick="toggleDetails('${p.ProductName.replace(/'/g, "\\'")}')">
-                        <i class="fas ${isExp ? 'fa-compress-alt' : 'fa-expand-alt'}"></i> ${isExp ? 'Compact View' : 'More Details'}
+                    <button class="btn-tool btn-info" data-tooltip="${isExp ? 'Compact View' : 'Details'}" onclick="toggleDetails('${p.ProductName.replace(/'/g, "\\'")}')">
+                        <i class="fas ${isExp ? 'fa-compress-alt' : 'fa-expand-alt'}"></i>
                     </button>
-                    <button class="btn-tool btn-edit" onclick="handleAuth('EDIT', '${p.ProductName.replace(/'/g, "\\'")}')"><i class="fas fa-pen"></i> Edit</button>
-                    <button class="btn-tool btn-del" onclick="handleAuth('DELETE', '${p.ProductName.replace(/'/g, "\\'")}')"><i class="fas fa-trash"></i> Delete</button>
+                    <button class="btn-tool btn-dup" data-tooltip="Duplicate" onclick="handleDuplicate('${p.ProductName.replace(/'/g, "\\'")}')">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                    <button class="btn-tool btn-edit" data-tooltip="Edit" onclick="handleAuth('EDIT', '${p.ProductName.replace(/'/g, "\\'")}')">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    <button class="btn-tool btn-del" data-tooltip="Delete" onclick="handleAuth('DELETE', '${p.ProductName.replace(/'/g, "\\'")}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
             </div>
         `}).join('');
@@ -249,9 +261,7 @@
         expandedId = (expandedId === name) ? null : name;
         render();
         if(expandedId) {
-            setTimeout(() => {
-                document.querySelector('.expanded').scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 100);
+            setTimeout(() => { document.querySelector('.expanded').scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
         }
     }
 
@@ -272,7 +282,7 @@
             container.innerHTML = Object.entries(p).map(([k,v]) => `
                 <div>
                     <label style="font-size:10px; color:var(--gold); font-weight:700; text-transform:uppercase;">${k}</label>
-                    <input type="text" id="inp_${k}" value="${v || ''}" ${k === 'ProductName' ? 'readonly' : ''} 
+                    <input type="text" id="inp_${k}" value="${v || ''}" 
                     style="width:100%; padding:10px; background:#000; color:white; border:1px solid #444; border-radius:5px;">
                 </div>
             `).join('');
@@ -282,6 +292,24 @@
                 syncToCloud({ ProductName: name, action: "DELETE" });
             }
         }
+    }
+
+    function handleDuplicate(name) {
+        if(prompt("Administrator Password Required:") !== ADMIN_PASS) return alert("Unauthorized Access.");
+        const p = dbRaw.find(x => x.ProductName === name);
+        const container = document.getElementById('formContainer');
+        
+        container.innerHTML = Object.entries(p).map(([k,v]) => {
+            let val = (k === 'ProductName') ? `${v} (Copy)` : (v || '');
+            return `
+                <div>
+                    <label style="font-size:10px; color:var(--gold); font-weight:700; text-transform:uppercase;">${k}</label>
+                    <input type="text" id="inp_${k}" value="${val}" 
+                    style="width:100%; padding:10px; background:#000; color:white; border:1px solid #444; border-radius:5px;">
+                </div>
+            `;
+        }).join('');
+        document.getElementById('editModal').style.display = 'flex';
     }
 
     async function syncToCloud(payload) {

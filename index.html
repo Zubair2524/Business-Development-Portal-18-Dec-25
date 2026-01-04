@@ -55,7 +55,7 @@
             padding: 10px; border-radius: 50px; backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
         }
-        .theme-btn { width: 25px; height: 25px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+        .theme-btn { width: 25px; height: 25px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
 
         /* Header & Logo */
         .portal-header { text-align: center; padding: 30px 10px; position: relative; }
@@ -85,7 +85,7 @@
         }
         .dot { height: 8px; width: 8px; background-color: #2ecc71; border-radius: 50%; display: inline-block; animation: blink 2s infinite; }
 
-        /* Glassmorphic Icons */
+        /* Icons */
         .icon-circle {
             width: 60px; height: 60px; background: var(--icon-glass); 
             border-radius: 50%; display: flex; align-items: center; 
@@ -129,7 +129,6 @@
         
         .card-title { font-size: 1.3rem; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 12px; margin-bottom: 5px; }
         .card-title .icon-circle { width: 45px; height: 45px; margin: 0; }
-        .card-title i { font-size: 1.1rem; animation: bounce 3s infinite; }
 
         .comp-line { font-size: 0.85rem; opacity: 0.8; font-style: italic; display: block; margin-bottom: 10px; }
         .ind-pill { font-size: 0.7rem; background: var(--sub-accent); color: white; padding: 3px 10px; border-radius: 50px; font-weight: 700; display: inline-block; margin-bottom: 15px; }
@@ -146,27 +145,16 @@
             animation: fadeIn 0.5s ease;
         }
 
-        /* Buttons & Interaction */
-        .btn-row { display: flex; gap: 6px; margin-top: auto; padding-top: 15px; }
-        .btn-tool { 
-            flex: 1; padding: 8px 4px; border-radius: 6px; border: none; cursor: pointer;
-            font-weight: 700; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 0.9rem;
-        }
-        .btn-edit { background: var(--accent); color: #000; }
-        .btn-info { background: var(--sub-accent); color: white; }
-        .btn-dup { background: #8e44ad; color: white; }
-        .btn-del { background: transparent; border: 1px solid #e74c3c; color: #e74c3c; }
-
         /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 999; padding: 20px; overflow-y: auto; align-items: center; justify-content: center; }
-        .modal-content { background: var(--glass-bg); width: 100%; max-width: 750px; border-radius: 20px; padding: 30px; border: 2px solid var(--accent); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 999; padding: 20px; align-items: center; justify-content: center; }
+        .modal-content { background: var(--glass-bg); width: 100%; max-width: 750px; border-radius: 20px; padding: 30px; border: 2px solid var(--accent); color: var(--text-main); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
         /* Animations */
         @keyframes fadeIn { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-8px);} 60% {transform: translateY(-4px);} }
     </style>
 </head>
 <body>
@@ -216,8 +204,8 @@
             <h2 style="color:var(--accent); margin-bottom:20px; border-bottom: 2px solid var(--accent); padding-bottom: 10px;"><i class="fas fa-edit"></i> Product Master Update</h2>
             <div class="form-grid" id="formContainer"></div>
             <div style="margin-top:25px; display:flex; gap:10px;">
-                <button id="btnSave" class="btn-tool" onclick="saveRecord()" style="background:#27ae60; color:white; flex:2;">Update Record</button>
-                <button class="btn-tool" onclick="closeModal()" style="background:#555; color:white; flex:1;">Cancel</button>
+                <button id="btnSave" class="btn-tool" onclick="saveRecord()" style="background:#27ae60; color:white; flex:2; padding:10px; border-radius:8px; border:none; cursor:pointer; font-weight:bold;">Update Record</button>
+                <button class="btn-tool" onclick="closeModal()" style="background:#555; color:white; flex:1; padding:10px; border-radius:8px; border:none; cursor:pointer;">Cancel</button>
             </div>
         </div>
     </div>
@@ -237,31 +225,44 @@
     const savedTheme = localStorage.getItem('selected-theme') || 'dark';
     setTheme(savedTheme);
 
+    // FIXED & ENRICHED: Dropdown with Count Badge
     async function init() {
         try {
             const res = await fetch(API_URL);
             dbRaw = await res.json();
             dbFiltered = [...dbRaw];
             
-            // Populate Filters
-            const teams = [...new Set(dbRaw.map(x => x.TeamName).filter(Boolean))].sort();
-            const notes = [...new Set(dbRaw.map(x => x.SpecialNote).filter(Boolean))].sort();
+            // Generate counts for badges
+            const teamCounts = dbRaw.reduce((acc, curr) => {
+                if(curr.TeamName) acc[curr.TeamName] = (acc[curr.TeamName] || 0) + 1;
+                return acc;
+            }, {});
+
+            const noteCounts = dbRaw.reduce((acc, curr) => {
+                if(curr.SpecialNote) acc[curr.SpecialNote] = (acc[curr.SpecialNote] || 0) + 1;
+                return acc;
+            }, {});
+            
+            const teams = Object.keys(teamCounts).sort();
+            const notes = Object.keys(noteCounts).sort();
             
             const tSel = document.getElementById('filterTeam');
             const nSel = document.getElementById('filterNote');
             
-            // Clear and rebuild to ensure "All Teams" always shows
             tSel.innerHTML = '<option value="">All Teams</option>';
             nSel.innerHTML = '<option value="">Special Note</option>';
             
             teams.forEach(t => {
-                const opt = document.createElement('option');
-                opt.value = opt.textContent = t;
+                let opt = document.createElement('option');
+                opt.value = t;
+                opt.textContent = `${t} (${teamCounts[t]})`; // Added Badge
                 tSel.appendChild(opt);
             });
+
             notes.forEach(n => {
-                const opt = document.createElement('option');
-                opt.value = opt.textContent = n;
+                let opt = document.createElement('option');
+                opt.value = n;
+                opt.textContent = `${n} (${noteCounts[n]})`; // Added Badge
                 nSel.appendChild(opt);
             });
             
@@ -272,6 +273,20 @@
     }
 
     const fmtG = (v) => (!v || isNaN(v)) ? (v || '0') : `${v}%`;
+
+    // UPDATED: Advanced Medical Icons
+    function getFormIcon(form) {
+        const f = (form || "").toLowerCase();
+        if(f.includes("suspension") || f.includes("syrup") || f.includes("liq") || f.includes("drop")) 
+            return "fa-prescription-bottle";
+        if(f.includes("inj") || f.includes("vial") || f.includes("infusion") || f.includes("amp")) 
+            return "fa-syringe";
+        if(f.includes("cream") || f.includes("oint") || f.includes("lotion") || f.includes("gel")) 
+            return "fa-pump-medical";
+        if(f.includes("tab")) return "fa-tablets";
+        if(f.includes("cap")) return "fa-capsules";
+        return "fa-pills"; 
+    }
 
     function render() {
         const grid = document.getElementById('productGrid');
@@ -306,16 +321,16 @@
                 ` : ''}
 
                 <div class="btn-row">
-                    <button class="btn-tool btn-info" onclick="toggleDetails('${p.ProductName.replace(/'/g, "\\'")}')">
+                    <button style="flex:1; padding:8px; border-radius:5px; border:none; cursor:pointer; background:var(--sub-accent); color:white;" onclick="toggleDetails('${p.ProductName.replace(/'/g, "\\'")}')">
                         <i class="fas ${isExp ? 'fa-compress-alt' : 'fa-expand-alt'}"></i>
                     </button>
-                    <button class="btn-tool btn-dup" onclick="handleDuplicate('${p.ProductName.replace(/'/g, "\\'")}')">
+                    <button style="flex:1; padding:8px; border-radius:5px; border:none; cursor:pointer; background:#8e44ad; color:white;" onclick="handleDuplicate('${p.ProductName.replace(/'/g, "\\'")}')">
                         <i class="fas fa-copy"></i>
                     </button>
-                    <button class="btn-tool btn-edit" onclick="handleAuth('EDIT', '${p.ProductName.replace(/'/g, "\\'")}')">
+                    <button style="flex:1; padding:8px; border-radius:5px; border:none; cursor:pointer; background:var(--accent); color:#000;" onclick="handleAuth('EDIT', '${p.ProductName.replace(/'/g, "\\'")}')">
                         <i class="fas fa-pen"></i>
                     </button>
-                    <button class="btn-tool btn-del" onclick="handleAuth('DELETE', '${p.ProductName.replace(/'/g, "\\'")}')">
+                    <button style="flex:1; padding:8px; border-radius:5px; border:1px solid #e74c3c; cursor:pointer; background:transparent; color:#e74c3c;" onclick="handleAuth('DELETE', '${p.ProductName.replace(/'/g, "\\'")}')">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -326,23 +341,6 @@
     function toggleDetails(name) {
         expandedId = (expandedId === name) ? null : name;
         render();
-        if(expandedId) {
-            setTimeout(() => { document.querySelector('.expanded').scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
-        }
-    }
-
-    function getFormIcon(form) {
-        const f = (form || "").toLowerCase();
-        // Liquid/Bottle
-        if(f.includes("suspension") || f.includes("syrup") || f.includes("liq") || f.includes("drop")) return "fa-prescription-bottle";
-        // Injection/Infusion/Vial
-        if(f.includes("inj") || f.includes("vial") || f.includes("infusion") || f.includes("ampoule")) return "fa-syringe";
-        // Topicals/Creams
-        if(f.includes("cream") || f.includes("oint") || f.includes("lotion") || f.includes("gel")) return "fa-pump-medical";
-        // Solids
-        if(f.includes("tab")) return "fa-tablets";
-        if(f.includes("cap")) return "fa-capsules";
-        return "fa-pills";
     }
 
     function handleAuth(action, name) {
@@ -355,12 +353,12 @@
                 <div>
                     <label style="font-size:10px; color:var(--accent); font-weight:700; text-transform:uppercase;">${k}</label>
                     <input type="text" id="inp_${k}" value="${v || ''}" 
-                    style="width:100%; padding:10px; background:rgba(0,0,0,0.1); color:inherit; border:1px solid var(--accent); border-radius:5px;">
+                    style="width:100%; padding:8px; background:rgba(255,255,255,0.1); color:inherit; border:1px solid var(--accent); border-radius:5px;">
                 </div>
             `).join('');
             document.getElementById('editModal').style.display = 'flex';
         } else if(action === 'DELETE') {
-            if(confirm(`Are you sure you want to PERMANENTLY delete "${name}"?`)) {
+            if(confirm(`Are you sure you want to delete "${name}"?`)) {
                 syncToCloud({ ProductName: name, action: "DELETE" });
             }
         }
@@ -372,7 +370,7 @@
         const container = document.getElementById('formContainer');
         container.innerHTML = Object.entries(p).map(([k,v]) => {
             let val = (k === 'ProductName') ? `${v} (Copy)` : (v || '');
-            return `<div><label style="font-size:10px; color:var(--accent); uppercase;">${k}</label><input type="text" id="inp_${k}" value="${val}" style="width:100%; padding:10px; background:rgba(0,0,0,0.1); border:1px solid var(--accent); border-radius:5px;"></div>`;
+            return `<div><label style="font-size:10px; color:var(--accent); uppercase;">${k}</label><input type="text" id="inp_${k}" value="${val}" style="width:100%; padding:8px; background:rgba(255,255,255,0.1); border:1px solid var(--accent); border-radius:5px; color:white;"></div>`;
         }).join('');
         document.getElementById('editModal').style.display = 'flex';
     }
@@ -380,29 +378,30 @@
     async function syncToCloud(payload) {
         try {
             await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-            alert("Cloud Sync Successful.");
+            alert("Cloud Sync Sent.");
             location.reload();
-        } catch (e) { alert("Sync Failed."); }
+        } catch (e) { alert("Sync Error."); }
     }
 
     async function saveRecord() {
-        const btn = document.getElementById('btnSave');
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing...';
         const payload = {};
         document.querySelectorAll('[id^="inp_"]').forEach(el => {
-            const keyName = el.id.replace('inp_', '');
-            payload[keyName] = el.value;
+            payload[el.id.replace('inp_', '')] = el.value;
         });
         await syncToCloud(payload);
     }
 
+    // FIXED: Correct Filter Logic
     function applyFilters() {
         const s = document.getElementById('mainSearch').value.toLowerCase();
         const t = document.getElementById('filterTeam').value;
         const n = document.getElementById('filterNote').value;
         dbFiltered = dbRaw.filter(p => {
             const searchableText = Object.values(p).join(" ").toLowerCase();
-            return searchableText.includes(s) && (!t || p.TeamName === t) && (!n || p.SpecialNote === n);
+            const matchSearch = searchableText.includes(s);
+            const matchTeam = !t || p.TeamName === t;
+            const matchNote = !n || p.SpecialNote === n;
+            return matchSearch && matchTeam && matchNote;
         });
         render();
     }
@@ -416,6 +415,7 @@
     }
 
     function closeModal() { document.getElementById('editModal').style.display = 'none'; }
+    
     document.getElementById('mainSearch').addEventListener('input', applyFilters);
     document.getElementById('filterTeam').addEventListener('change', applyFilters);
     document.getElementById('filterNote').addEventListener('change', applyFilters);

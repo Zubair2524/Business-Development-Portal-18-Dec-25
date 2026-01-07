@@ -51,12 +51,76 @@
             min-height: 100vh;
         }
 
-        /* Custom Scrollbar */
+        /* --- Capsule Animation Styles --- */
+        .capsule-container {
+            width: 100px;
+            height: 120px;
+            margin: 10px auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cap-top, .cap-bottom {
+            width: 40px;
+            height: 50px;
+            border-radius: 20px;
+            position: absolute;
+            z-index: 2;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.3), 0 0 15px var(--accent);
+        }
+
+        .cap-top {
+            background: #d4af37; /* Gold part */
+            top: 10px;
+            animation: openTop 4s infinite ease-in-out;
+        }
+
+        .cap-bottom {
+            background: #fdf5e6; /* White part */
+            bottom: 10px;
+            animation: openBottom 4s infinite ease-in-out;
+        }
+
+        .pellet {
+            width: 8px;
+            height: 8px;
+            background: var(--sub-accent);
+            border-radius: 50%;
+            position: absolute;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        /* Pellets Movement */
+        .p1 { animation: pelletMove 4s infinite ease-in-out 0.5s; left: 45%; }
+        .p2 { animation: pelletMove 4s infinite ease-in-out 0.7s; left: 50%; }
+        .p3 { animation: pelletMove 4s infinite ease-in-out 0.9s; left: 55%; }
+
+        @keyframes openTop {
+            0%, 20%, 100% { transform: translateY(25px); }
+            50%, 70% { transform: translateY(-10px); }
+        }
+
+        @keyframes openBottom {
+            0%, 20%, 100% { transform: translateY(-25px); }
+            50%, 70% { transform: translateY(10px); }
+        }
+
+        @keyframes pelletMove {
+            0%, 20%, 100% { transform: translateY(0) scale(0); opacity: 0; }
+            40% { opacity: 1; }
+            50%, 60% { transform: translateY(-30px) translateX(15px); scale(1.2); opacity: 1; }
+            80% { transform: translateY(0) scale(0); opacity: 0; }
+        }
+
+        /* Existing Styles ... */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
 
-        /* Theme Selector */
         .theme-switcher {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
             display: flex; gap: 10px; background: var(--glass-bg);
@@ -67,7 +131,6 @@
         .theme-btn { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.2); }
         .theme-btn:hover { transform: scale(1.2); }
 
-        /* Header & Logo */
         .portal-header { text-align: center; padding: 40px 10px; position: relative; animation: slideDown 1s ease-out; }
         .logo-box img { 
             height: 120px; margin-bottom: 20px; 
@@ -78,7 +141,6 @@
         .sub-heading { color: var(--sub-accent); letter-spacing: 6px; font-weight: 700; font-size: 0.9rem; margin-top: 5px; text-transform: uppercase; }
         .agm-line { font-size: 0.75rem; color: var(--text-main); opacity: 0.6; letter-spacing: 4px; margin-top: 5px; font-weight: 400; border-top: 1px solid var(--accent); display: inline-block; padding-top: 5px; }
 
-        /* KPI Dashboard */
         .kpi-row {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px; max-width: 1200px; margin: 30px auto;
@@ -99,7 +161,6 @@
         }
         .dot { height: 8px; width: 8px; background-color: #2ecc71; border-radius: 50%; display: inline-block; animation: blink 2s infinite; }
 
-        /* Icons */
         .icon-circle {
             width: 70px; height: 70px; background: var(--icon-glass); 
             border-radius: 50%; display: flex; align-items: center; 
@@ -107,13 +168,11 @@
             backdrop-filter: blur(5px); border: 1px solid var(--glass-border);
             box-shadow: inset 0 0 20px rgba(255,255,255,0.05);
         }
-        /* KPI Pulse Animation */
         .kpi-card i { font-size: 1.8rem; color: var(--accent); animation: pulse 2s infinite; }
         
         .kpi-val { display: block; font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 5px; line-height: 1; }
         .kpi-lab { font-size: 0.8rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Filters */
         .filter-glass {
             background: var(--glass-bg); backdrop-filter: blur(25px);
             border-radius: 25px; padding: 25px; max-width: 1200px;
@@ -148,7 +207,6 @@
         }
         .btn-clear:hover { background: #ff6b81; transform: translateY(-2px); }
 
-        /* Product Cards */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; max-width: 1300px; margin: auto; }
         
         .p-card {
@@ -165,13 +223,11 @@
         
         .card-title { font-size: 1.4rem; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 15px; margin-bottom: 10px; line-height: 1.2; }
         .card-title .icon-circle { width: 50px; height: 50px; margin: 0; min-width: 50px; background: rgba(0,0,0,0.2); }
-        /* Card Icon Animation */
         .card-title i { font-size: 1.2rem; animation: bounce 3s infinite ease-in-out; }
 
         .comp-line { font-size: 0.9rem; opacity: 0.9; font-style: italic; display: block; margin-bottom: 12px; color: #fff; }
         .ind-pill { font-size: 0.75rem; background: var(--sub-accent); color: white; padding: 4px 12px; border-radius: 50px; font-weight: 700; display: inline-block; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
-        /* Data Matrix */
         .matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
         .m-item { display: flex; flex-direction: column; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px; }
         .m-lab { font-size: 0.65rem; color: var(--accent); text-transform: uppercase; font-weight: 800; opacity: 0.8; }
@@ -183,7 +239,6 @@
             animation: fadeIn 0.5s ease;
         }
 
-        /* Buttons & Interaction */
         .btn-row { display: flex; gap: 10px; margin-top: auto; padding-top: 20px; }
         .btn-tool { 
             flex: 1; padding: 10px; border-radius: 10px; border: none; cursor: pointer;
@@ -197,13 +252,10 @@
         .btn-del { background: transparent; border: 2px solid #e74c3c; color: #e74c3c; box-shadow: none; }
         .btn-del:hover { background: #e74c3c; color: white; }
 
-        /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 999; padding: 20px; overflow-y: auto; align-items: center; justify-content: center; }
         .modal-content { background: #102141; width: 100%; max-width: 800px; border-radius: 25px; padding: 40px; border: 2px solid var(--accent); box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: zoomIn 0.3s ease; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
 
-        /* Animations */
         @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
         @keyframes slideDown { from {opacity: 0; transform: translateY(-30px);} to {opacity: 1; transform: translateY(0);} }
         @keyframes slideUp { from {opacity: 0; transform: translateY(40px);} to {opacity: 1; transform: translateY(0);} }
@@ -227,6 +279,15 @@
             <img src="1ab.png" alt="Shaigan Logo" onerror="this.src='https://i.ibb.co/qY7z8yY/Shaigan-Logo.png'">
         </div>
         <h1>Business Development Portal</h1>
+        
+        <div class="capsule-container">
+            <div class="cap-top"></div>
+            <div class="pellet p1"></div>
+            <div class="pellet p2"></div>
+            <div class="pellet p3"></div>
+            <div class="cap-bottom"></div>
+        </div>
+
         <div class="sub-heading">R&D | Regulatory | Business Development</div>
         <div class="agm-line">AGM BD Strategic Dashboard</div>
     </header>
@@ -290,25 +351,18 @@
             dbRaw = await res.json();
             dbFiltered = [...dbRaw];
             
-            // 2. Logic to count Notes
             const noteCounts = {};
             dbRaw.forEach(item => {
                 const n = (item.SpecialNote || "").trim();
-                if(n) {
-                    noteCounts[n] = (noteCounts[n] || 0) + 1;
-                }
+                if(n) { noteCounts[n] = (noteCounts[n] || 0) + 1; }
             });
             
             const nSel = document.getElementById('filterNote');
-            
-            // Reset Dropdown
             nSel.innerHTML = `<option value="">All Notes (${dbRaw.length})</option>`;
-            
-            // Populate Sorted Notes with Counts
             Object.keys(noteCounts).sort().forEach(n => {
                 const opt = document.createElement('option');
                 opt.value = n;
-                opt.textContent = `${n} (${noteCounts[n]})`; // Badge Format
+                opt.textContent = `${n} (${noteCounts[n]})`;
                 nSel.appendChild(opt);
             });
             
@@ -327,7 +381,6 @@
 
         grid.innerHTML = dbFiltered.map((p, i) => {
             const isExp = expandedId === p.ProductName;
-            // Added animation-delay for staggered effect
             return `
             <div class="p-card ${isExp ? 'expanded' : ''}" id="card-${i}" style="animation-delay: ${i * 0.05}s">
                 <div class="card-title">
@@ -377,20 +430,13 @@
     function toggleDetails(name) {
         expandedId = (expandedId === name) ? null : name;
         render();
-        if(expandedId) {
-            setTimeout(() => { document.querySelector('.expanded').scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
-        }
     }
 
     function getFormIcon(form) {
         const f = (form || "").toLowerCase();
-        // Liquid/Bottle
         if(f.includes("suspension") || f.includes("syrup") || f.includes("liq") || f.includes("drop")) return "fa-prescription-bottle-alt";
-        // Injection/Infusion/Vial
         if(f.includes("inj") || f.includes("vial") || f.includes("infusion") || f.includes("ampoule")) return "fa-syringe";
-        // Topicals/Creams
         if(f.includes("cream") || f.includes("oint") || f.includes("lotion") || f.includes("gel")) return "fa-pump-medical";
-        // Solids
         if(f.includes("tab")) return "fa-tablets";
         if(f.includes("cap")) return "fa-capsules";
         return "fa-box-open";
@@ -450,11 +496,9 @@
     function applyFilters() {
         const s = document.getElementById('mainSearch').value.toLowerCase();
         const n = document.getElementById('filterNote').value;
-        
         dbFiltered = dbRaw.filter(p => {
             const searchableText = Object.values(p).join(" ").toLowerCase();
             const noteVal = (p.SpecialNote || "").trim();
-            
             return searchableText.includes(s) && (!n || noteVal === n);
         });
         render();

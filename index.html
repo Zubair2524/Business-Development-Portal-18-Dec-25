@@ -51,72 +51,25 @@
             min-height: 100vh;
         }
 
-        /* --- Capsule Animation Styles --- */
-        .capsule-container {
-            width: 100px;
-            height: 120px;
-            margin: 10px auto;
-            position: relative;
+        /* --- Updated Video Container Styles --- */
+        .capsule-video-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
-        .cap-top, .cap-bottom {
-            width: 40px;
-            height: 50px;
-            border-radius: 20px;
-            position: absolute;
-            z-index: 2;
-            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.3), 0 0 15px var(--accent);
+        .capsule-video-container video {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            filter: drop-shadow(0 0 10px var(--accent));
         }
 
-        .cap-top {
-            background: #d4af37; /* Gold part */
-            top: 10px;
-            animation: openTop 4s infinite ease-in-out;
-        }
-
-        .cap-bottom {
-            background: #fdf5e6; /* White part */
-            bottom: 10px;
-            animation: openBottom 4s infinite ease-in-out;
-        }
-
-        .pellet {
-            width: 8px;
-            height: 8px;
-            background: var(--sub-accent);
-            border-radius: 50%;
-            position: absolute;
-            opacity: 0;
-            z-index: 1;
-        }
-
-        /* Pellets Movement */
-        .p1 { animation: pelletMove 4s infinite ease-in-out 0.5s; left: 45%; }
-        .p2 { animation: pelletMove 4s infinite ease-in-out 0.7s; left: 50%; }
-        .p3 { animation: pelletMove 4s infinite ease-in-out 0.9s; left: 55%; }
-
-        @keyframes openTop {
-            0%, 20%, 100% { transform: translateY(25px); }
-            50%, 70% { transform: translateY(-10px); }
-        }
-
-        @keyframes openBottom {
-            0%, 20%, 100% { transform: translateY(-25px); }
-            50%, 70% { transform: translateY(10px); }
-        }
-
-        @keyframes pelletMove {
-            0%, 20%, 100% { transform: translateY(0) scale(0); opacity: 0; }
-            40% { opacity: 1; }
-            50%, 60% { transform: translateY(-30px) translateX(15px); scale(1.2); opacity: 1; }
-            80% { transform: translateY(0) scale(0); opacity: 0; }
-        }
-
-        /* Existing Styles ... */
+        /* --- Existing Styles ... --- */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
@@ -280,12 +233,11 @@
         </div>
         <h1>Business Development Portal</h1>
         
-        <div class="capsule-container">
-            <div class="cap-top"></div>
-            <div class="pellet p1"></div>
-            <div class="pellet p2"></div>
-            <div class="pellet p3"></div>
-            <div class="cap-bottom"></div>
+        <div class="capsule-video-container">
+            <video autoplay loop muted playsinline>
+                <source src="capsule.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
 
         <div class="sub-heading">R&D | Regulatory | Business Development</div>

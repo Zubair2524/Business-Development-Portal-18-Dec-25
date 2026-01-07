@@ -51,16 +51,17 @@
             min-height: 100vh;
         }
 
-        /* --- Updated Video Background Styles --- */
+        /* --- Massive Background Video Container --- */
         .video-background-container {
             position: relative;
             width: 100%;
-            max-width: 800px; /* Aligns with the width of typical main headings */
+            max-width: 100%; /* Expanded display size */
             margin: 0 auto;
-            padding: 20px 0;
+            padding: 40px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow: visible;
         }
 
         .bg-capsule-video {
@@ -68,20 +69,23 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
+            width: 120%; /* Increased size to create a sprawling background effect */
+            max-width: 1600px;
+            height: auto;
             object-fit: contain;
-            opacity: 0.3; /* Decreased opacity for background effect */
+            opacity: 0.5; /* Increased visibility (50% opacity) */
             z-index: 0;
             pointer-events: none;
+            filter: blur(2px); /* Slight blur to keep text sharp */
         }
 
         .header-text-layer {
             position: relative;
-            z-index: 1; /* Ensures text stays above the video */
+            z-index: 1;
+            text-align: center;
         }
 
-        /* --- Existing Styles --- */
+        /* --- Existing Portal Styles --- */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
@@ -104,7 +108,7 @@
         }
         h1 { color: var(--accent); text-transform: uppercase; letter-spacing: 3px; font-size: 2.5rem; font-weight: 800; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
         .sub-heading { color: var(--sub-accent); letter-spacing: 6px; font-weight: 700; font-size: 0.9rem; margin-top: 5px; text-transform: uppercase; }
-        .agm-line { font-size: 0.75rem; color: var(--text-main); opacity: 0.6; letter-spacing: 4px; margin-top: 5px; font-weight: 400; border-top: 1px solid var(--accent); display: inline-block; padding-top: 5px; }
+        .agm-line { font-size: 0.75rem; color: var(--text-main); opacity: 0.8; letter-spacing: 4px; margin-top: 5px; font-weight: 400; border-top: 1px solid var(--accent); display: inline-block; padding-top: 5px; }
 
         .kpi-row {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -133,8 +137,6 @@
             backdrop-filter: blur(5px); border: 1px solid var(--glass-border);
             box-shadow: inset 0 0 20px rgba(255,255,255,0.05);
         }
-        .kpi-card i { font-size: 1.8rem; color: var(--accent); animation: pulse 2s infinite; }
-        
         .kpi-val { display: block; font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 5px; line-height: 1; }
         .kpi-lab { font-size: 0.8rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
 
@@ -162,7 +164,6 @@
             background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23d4af37%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
             background-repeat: no-repeat; background-position: right 15px top 50%; background-size: 12px auto;
         }
-        .drop-filter option { background: #102141; color: white; }
         
         .btn-clear { 
             background: #ff4757; color: white; border: none; padding: 0 30px; height: 52px;
@@ -170,7 +171,6 @@
             text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;
             box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
         }
-        .btn-clear:hover { background: #ff6b81; transform: translateY(-2px); }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; max-width: 1300px; margin: auto; }
         
@@ -182,53 +182,10 @@
             box-shadow: var(--card-shadow);
             opacity: 0; animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
-        
-        .p-card.expanded { grid-column: 1 / -1; border: 2px solid var(--accent); background: rgba(16, 33, 65, 0.95); }
-        .p-card:hover:not(.expanded) { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.4); border-color: var(--accent); }
-        
-        .card-title { font-size: 1.4rem; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 15px; margin-bottom: 10px; line-height: 1.2; }
-        .card-title .icon-circle { width: 50px; height: 50px; margin: 0; min-width: 50px; background: rgba(0,0,0,0.2); }
-        .card-title i { font-size: 1.2rem; animation: bounce 3s infinite ease-in-out; }
 
-        .comp-line { font-size: 0.9rem; opacity: 0.9; font-style: italic; display: block; margin-bottom: 12px; color: #fff; }
-        .ind-pill { font-size: 0.75rem; background: var(--sub-accent); color: white; padding: 4px 12px; border-radius: 50px; font-weight: 700; display: inline-block; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-
-        .matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
-        .m-item { display: flex; flex-direction: column; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px; }
-        .m-lab { font-size: 0.65rem; color: var(--accent); text-transform: uppercase; font-weight: 800; opacity: 0.8; }
-        .m-val { font-size: 1rem; font-weight: 700; color: var(--text-main); }
-
-        .extra-details {
-            margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--accent);
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .btn-row { display: flex; gap: 10px; margin-top: auto; padding-top: 20px; }
-        .btn-tool { 
-            flex: 1; padding: 10px; border-radius: 10px; border: none; cursor: pointer;
-            font-weight: 700; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 1rem;
-            color: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .btn-tool:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        .btn-edit { background: var(--accent); color: #000; }
-        .btn-info { background: var(--sub-accent); }
-        .btn-dup { background: #9b59b6; }
-        .btn-del { background: transparent; border: 2px solid #e74c3c; color: #e74c3c; box-shadow: none; }
-        .btn-del:hover { background: #e74c3c; color: white; }
-
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 999; padding: 20px; overflow-y: auto; align-items: center; justify-content: center; }
-        .modal-content { background: #102141; width: 100%; max-width: 800px; border-radius: 25px; padding: 40px; border: 2px solid var(--accent); box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: zoomIn 0.3s ease; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-
-        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         @keyframes slideDown { from {opacity: 0; transform: translateY(-30px);} to {opacity: 1; transform: translateY(0);} }
         @keyframes slideUp { from {opacity: 0; transform: translateY(40px);} to {opacity: 1; transform: translateY(0);} }
-        @keyframes zoomIn { from {opacity: 0; transform: scale(0.9);} to {opacity: 1; transform: scale(1);} }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-8px);} 60% {transform: translateY(-4px);} }
     </style>
 </head>
 <body>
@@ -243,6 +200,7 @@
         <div class="logo-box">
             <img src="1ab.png" alt="Shaigan Logo" onerror="this.src='https://i.ibb.co/qY7z8yY/Shaigan-Logo.png'">
         </div>
+        
         <h1>Business Development Portal</h1>
         
         <div class="video-background-container">
@@ -260,11 +218,11 @@
     <div class="kpi-row">
         <div class="kpi-card">
             <div class="live-indicator"><span class="dot"></span> LIVE</div>
-            <div class="icon-circle"><i class="fas fa-database"></i></div>
+            <div class="icon-circle"><i class="fas fa-database" style="color:var(--accent); animation: pulse 2s infinite;"></i></div>
             <span class="kpi-val" id="countTotal">0</span><span class="kpi-lab">Total Portfolio Records</span>
         </div>
         <div class="kpi-card">
-            <div class="icon-circle"><i class="fas fa-filter"></i></div>
+            <div class="icon-circle"><i class="fas fa-filter" style="color:var(--accent); animation: pulse 2s infinite;"></i></div>
             <span class="kpi-val" id="countFiltered">0</span><span class="kpi-lab">Active Search Matches</span>
         </div>
     </div>
@@ -282,15 +240,13 @@
         </div>
     </div>
 
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <h2 style="color:var(--accent); margin-bottom:30px; border-bottom: 2px solid var(--accent); padding-bottom: 15px; text-transform:uppercase;">
-                <i class="fas fa-edit"></i> Modify Record
-            </h2>
-            <div class="form-grid" id="formContainer"></div>
+    <div id="editModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); backdrop-filter:blur(15px); z-index:999; align-items:center; justify-content:center;">
+        <div class="modal-content" style="background:#102141; width:100%; max-width:800px; border-radius:25px; padding:40px; border:2px solid var(--accent);">
+            <h2 style="color:var(--accent); margin-bottom:30px; border-bottom: 2px solid var(--accent); padding-bottom: 15px; text-transform:uppercase;"><i class="fas fa-edit"></i> Modify Record</h2>
+            <div class="form-grid" id="formContainer" style="display:grid; grid-template-columns:1fr 1fr; gap:20px;"></div>
             <div style="margin-top:30px; display:flex; gap:15px;">
-                <button id="btnSave" class="btn-tool" onclick="saveRecord()" style="background:#27ae60; flex:2; font-size:1.1rem;">Update Record</button>
-                <button class="btn-tool" onclick="closeModal()" style="background:#555; flex:1;">Cancel</button>
+                <button id="btnSave" class="btn-tool" onclick="saveRecord()" style="background:#27ae60; flex:2; padding:10px; border-radius:10px; border:none; color:white; cursor:pointer;">Update Record</button>
+                <button class="btn-tool" onclick="closeModal()" style="background:#555; flex:1; padding:10px; border-radius:10px; border:none; color:white; cursor:pointer;">Cancel</button>
             </div>
         </div>
     </div>
@@ -348,45 +304,25 @@
             const isExp = expandedId === p.ProductName;
             return `
             <div class="p-card ${isExp ? 'expanded' : ''}" id="card-${i}" style="animation-delay: ${i * 0.05}s">
-                <div class="card-title">
-                    <div class="icon-circle"><i class="fas ${getFormIcon(p.DosageForm)}"></i></div>
-                    <div>
-                        ${p.ProductName}
-                        <div style="font-size:0.6rem; opacity:0.6; font-weight:400; text-transform:uppercase; margin-top:2px;">${p.TeamName || 'Unassigned'}</div>
-                    </div>
+                <div class="card-title" style="font-size: 1.4rem; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                    <div class="icon-circle" style="width:50px; height:50px; margin:0; min-width:50px; background:rgba(0,0,0,0.2);"><i class="fas ${getFormIcon(p.DosageForm)}"></i></div>
+                    <div>${p.ProductName}<div style="font-size:0.6rem; opacity:0.6; text-transform:uppercase;">${p.TeamName || 'Unassigned'}</div></div>
                 </div>
-                <span class="comp-line">${p.Composition || 'Composition Pending'}</span>
-                <div class="ind-pill">${p.Indication || 'Therapeutic Area'}</div>
+                <span class="comp-line" style="font-size:0.9rem; opacity:0.9; font-style:italic; color:#fff;">${p.Composition || 'Composition Pending'}</span>
+                <div class="ind-pill" style="font-size:0.75rem; background:var(--sub-accent); color:white; padding:4px 12px; border-radius:50px; margin:10px 0;">${p.Indication || 'Therapeutic Area'}</div>
                 
-                <div class="matrix">
-                    <div class="m-item"><span class="m-lab">Molecule Market Value</span><span class="m-val" style="color:var(--accent)">${p.MATValue || '0'}</span></div>
-                    <div class="m-item"><span class="m-lab">Value Growth</span><span class="m-val" style="color:${parseFloat(p.ValueGrowth) > 0 ? '#2ecc71' : '#fff'}">${fmtG(p.ValueGrowth)}</span></div>
-                    <div class="m-item"><span class="m-lab">Unit Sale</span><span class="m-val">${p.UnitSale || '0'}</span></div>
-                    <div class="m-item"><span class="m-lab">Unit Growth</span><span class="m-val" style="color:${parseFloat(p.UnitGrowth) > 0 ? '#2ecc71' : '#fff'}">${fmtG(p.UnitGrowth)}</span></div>
+                <div class="matrix" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; background:rgba(0,0,0,0.2); padding:15px; border-radius:15px;">
+                    <div class="m-item"><span class="m-lab" style="font-size:0.65rem; color:var(--accent);">Molecule Market Value</span><span class="m-val">${p.MATValue || '0'}</span></div>
+                    <div class="m-item"><span class="m-lab" style="font-size:0.65rem; color:var(--accent);">Value Growth</span><span class="m-val">${fmtG(p.ValueGrowth)}</span></div>
+                    <div class="m-item"><span class="m-lab" style="font-size:0.65rem; color:var(--accent);">Unit Sale</span><span class="m-val">${p.UnitSale || '0'}</span></div>
+                    <div class="m-item"><span class="m-lab" style="font-size:0.65rem; color:var(--accent);">Unit Growth</span><span class="m-val">${fmtG(p.UnitGrowth)}</span></div>
                 </div>
 
-                ${isExp ? `
-                <div class="extra-details">
-                    ${Object.entries(p).map(([k,v]) => {
-                        if(['ProductName','Composition','Indication','MATValue','ValueGrowth','UnitSale','UnitGrowth', 'TeamName'].includes(k)) return '';
-                        return `<div class="m-item"><span class="m-lab">${k}</span><span class="m-val">${v || '---'}</span></div>`;
-                    }).join('')}
-                </div>
-                ` : ''}
-
-                <div class="btn-row">
-                    <button class="btn-tool btn-info" onclick="toggleDetails('${p.ProductName.replace(/'/g, "\\'")}')" title="Expand Details">
-                        <i class="fas ${isExp ? 'fa-compress-alt' : 'fa-expand-alt'}"></i>
-                    </button>
-                    <button class="btn-tool btn-dup" onclick="handleDuplicate('${p.ProductName.replace(/'/g, "\\'")}')" title="Duplicate Record">
-                        <i class="fas fa-copy"></i>
-                    </button>
-                    <button class="btn-tool btn-edit" onclick="handleAuth('EDIT', '${p.ProductName.replace(/'/g, "\\'")}')" title="Edit Master">
-                        <i class="fas fa-pen"></i>
-                    </button>
-                    <button class="btn-tool btn-del" onclick="handleAuth('DELETE', '${p.ProductName.replace(/'/g, "\\'")}')" title="Delete">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                <div class="btn-row" style="display:flex; gap:10px; margin-top:auto; padding-top:20px;">
+                    <button class="btn-tool" onclick="toggleDetails('${p.ProductName.replace(/'/g, "\\'")}')" style="background:var(--sub-accent); flex:1; border:none; padding:10px; border-radius:10px; color:white;"><i class="fas ${isExp ? 'fa-compress-alt' : 'fa-expand-alt'}"></i></button>
+                    <button class="btn-tool" onclick="handleDuplicate('${p.ProductName.replace(/'/g, "\\'")}')" style="background:#9b59b6; flex:1; border:none; padding:10px; border-radius:10px; color:white;"><i class="fas fa-copy"></i></button>
+                    <button class="btn-tool" onclick="handleAuth('EDIT', '${p.ProductName.replace(/'/g, "\\'")}')" style="background:var(--accent); flex:1; border:none; padding:10px; border-radius:10px; color:black;"><i class="fas fa-pen"></i></button>
+                    <button class="btn-tool" onclick="handleAuth('DELETE', '${p.ProductName.replace(/'/g, "\\'")}')" style="background:transparent; border:2px solid #e74c3c; flex:1; padding:10px; border-radius:10px; color:#e74c3c;"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
         `}).join('');
@@ -415,26 +351,23 @@
             const container = document.getElementById('formContainer');
             container.innerHTML = Object.entries(p).map(([k,v]) => `
                 <div>
-                    <label style="font-size:11px; color:var(--accent); font-weight:700; text-transform:uppercase; display:block; margin-bottom:5px;">${k}</label>
-                    <input type="text" id="inp_${k}" value="${v || ''}" 
-                    style="width:100%; padding:12px; background:rgba(0,0,0,0.2); color:white; border:1px solid rgba(255,255,255,0.2); border-radius:8px; font-size:0.9rem;">
+                    <label style="font-size:11px; color:var(--accent); text-transform:uppercase; display:block;">${k}</label>
+                    <input type="text" id="inp_${k}" value="${v || ''}" style="width:100%; padding:10px; background:rgba(0,0,0,0.2); color:white; border:1px solid rgba(255,255,255,0.2); border-radius:5px;">
                 </div>
             `).join('');
             document.getElementById('editModal').style.display = 'flex';
         } else if(action === 'DELETE') {
-            if(confirm(`Are you sure you want to PERMANENTLY delete "${name}"?`)) {
-                syncToCloud({ ProductName: name, action: "DELETE" });
-            }
+            if(confirm(`Delete "${name}"?`)) syncToCloud({ ProductName: name, action: "DELETE" });
         }
     }
 
     function handleDuplicate(name) {
-        if(prompt("Administrator Password Required:") !== ADMIN_PASS) return alert("Unauthorized Access.");
+        if(prompt("Password:") !== ADMIN_PASS) return;
         const p = dbRaw.find(x => x.ProductName === name);
         const container = document.getElementById('formContainer');
         container.innerHTML = Object.entries(p).map(([k,v]) => {
             let val = (k === 'ProductName') ? `${v} (Copy)` : (v || '');
-            return `<div><label style="font-size:11px; color:var(--accent); uppercase; display:block; margin-bottom:5px;">${k}</label><input type="text" id="inp_${k}" value="${val}" style="width:100%; padding:12px; background:rgba(0,0,0,0.2); color:white; border:1px solid rgba(255,255,255,0.2); border-radius:8px;"></div>`;
+            return `<div><label style="font-size:11px; color:var(--accent);">${k}</label><input type="text" id="inp_${k}" value="${val}" style="width:100%; padding:10px; background:rgba(0,0,0,0.2); color:white; border:1px solid rgba(255,255,255,0.2); border-radius:5px;"></div>`;
         }).join('');
         document.getElementById('editModal').style.display = 'flex';
     }
@@ -442,19 +375,14 @@
     async function syncToCloud(payload) {
         try {
             await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-            alert("Cloud Sync Successful.");
+            alert("Sync Success.");
             location.reload();
         } catch (e) { alert("Sync Failed."); }
     }
 
     async function saveRecord() {
-        const btn = document.getElementById('btnSave');
-        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Syncing...';
         const payload = {};
-        document.querySelectorAll('[id^="inp_"]').forEach(el => {
-            const keyName = el.id.replace('inp_', '');
-            payload[keyName] = el.value;
-        });
+        document.querySelectorAll('[id^="inp_"]').forEach(el => payload[el.id.replace('inp_', '')] = el.value);
         await syncToCloud(payload);
     }
 
@@ -463,8 +391,7 @@
         const n = document.getElementById('filterNote').value;
         dbFiltered = dbRaw.filter(p => {
             const searchableText = Object.values(p).join(" ").toLowerCase();
-            const noteVal = (p.SpecialNote || "").trim();
-            return searchableText.includes(s) && (!n || noteVal === n);
+            return searchableText.includes(s) && (!n || (p.SpecialNote || "") === n);
         });
         render();
     }
